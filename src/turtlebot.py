@@ -1,13 +1,15 @@
+#!/usr/bin/env python2
+
 from flask import Flask, render_template
 from flask.ext.socketio import SocketIO, emit
-import roslib
-roslib.load_manifest('turtlebot_web')
-from turtle_telop import TurtleTeleOp
+
+import roslib; roslib.load_manifest('turtlebot_web')
+from handlers.turtle_teleop import TurtleTeleOp
+
+app = Flask(__name__)
 
 socketio = SocketIO(app)
 mover = TurtleTeleOp()
-
-app = Flask(__name__)
 
 app.config.update(
     DEBUG=True,
