@@ -1,17 +1,17 @@
 from flask import Flask, render_template
 from flask.ext.socketio import SocketIO, emit
-from roslib
+import roslib
 roslib.load_manifest('turtlebot_web')
 from turtle_telop import TurtleTeleOp
 
-app = Flask(__name__)
 socketio = SocketIO(app)
+mover = TurtleTeleOp()
+
+app = Flask(__name__)
 
 app.config.update(
     DEBUG=True,
 )
-
-mover = TurtleTeleOp()
 
 @app.route('/')
 def index():
@@ -21,9 +21,9 @@ def index():
 def move_page():
     return render_template('move.html')
 
-@socketio.on('move', namespace='/test') 
-def move(message):
-    mover.move(message['x'], message['y'])
+@socketio.on('move', namespace='/drive')
+def move(data):
+    mover.move(data['x'], data['y'])
 
 if __name__ == '__main__':
     socketio.run(app)
