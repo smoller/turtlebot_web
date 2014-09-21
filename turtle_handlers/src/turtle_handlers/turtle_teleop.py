@@ -1,7 +1,3 @@
-#!/usr/bin/env python2
-
-import roslib
-#roslib.load_manifest('turtlebot_web')
 import rospy
 
 from geometry_msgs.msg import Twist
@@ -10,7 +6,7 @@ class TurtleTeleOp(object):
 
     def __init__(self, topic='cmd_vel_mux/input/navi'):
         rospy.init_node('turtlebot_move', anonymous=True)
-        self.pub = rospy.Publisher(topic, Twist)
+        self.pub = rospy.Publisher(topic, Twist, queue_size=1)
         self.twist = Twist()
         self.speed = self.omega = 0
 
@@ -37,5 +33,3 @@ class TurtleTeleOp(object):
 
     def _clamp(self, n, minn, maxn):
         return max(min(maxn, n), minn)
-
-if __name__ == '__main__': test_teleop()

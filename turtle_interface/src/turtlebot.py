@@ -3,8 +3,7 @@
 from flask import Flask, render_template
 from flask.ext.socketio import SocketIO, emit
 
-import roslib; roslib.load_manifest('turtlebot_web')
-from handlers.turtle_teleop import TurtleTeleOp
+from turtle_handlers.turtle_teleop import TurtleTeleOp
 
 app = Flask(__name__)
 

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(turtlebot_web)
+project(turtle_interface)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -7,16 +7,13 @@ project(turtlebot_web)
 find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
+  turtle_handlers
 )
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
-
-## Uncomment this if the package has a setup.py. This macro ensures
-## modules and global scripts declared therein get installed
-## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
-# catkin_python_setup()
+#catkin_python_setup()
 
 ################################################
 ## Declare ROS messages, services and actions ##
@@ -80,8 +77,8 @@ find_package(catkin REQUIRED COMPONENTS
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES turtlebot_web
-#  CATKIN_DEPENDS rospy std_msgs
+#  LIBRARIES turtle_interface
+#  CATKIN_DEPENDS rospy std_msgs turtle_handlers
 #  DEPENDS system_lib
 )
 
@@ -97,19 +94,19 @@ include_directories(
 )
 
 ## Declare a cpp library
-# add_library(turtlebot_web
-#   src/${PROJECT_NAME}/turtlebot_web.cpp
+# add_library(turtle_interface
+#   src/${PROJECT_NAME}/turtle_interface.cpp
 # )
 
 ## Declare a cpp executable
-# add_executable(turtlebot_web_node src/turtlebot_web_node.cpp)
+# add_executable(turtle_interface_node src/turtle_interface_node.cpp)
 
 ## Add cmake target dependencies of the executable/library
 ## as an example, message headers may need to be generated before nodes
-# add_dependencies(turtlebot_web_node turtlebot_web_generate_messages_cpp)
+# add_dependencies(turtle_interface_node turtle_interface_generate_messages_cpp)
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(turtlebot_web_node
+# target_link_libraries(turtle_interface_node
 #   ${catkin_LIBRARIES}
 # )
 
@@ -128,7 +125,7 @@ include_directories(
 # )
 
 ## Mark executables and/or libraries for installation
-# install(TARGETS turtlebot_web turtlebot_web_node
+# install(TARGETS turtle_interface turtle_interface_node
 #   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
@@ -153,7 +150,7 @@ include_directories(
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_turtlebot_web.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_turtle_interface.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
