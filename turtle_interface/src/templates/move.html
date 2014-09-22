@@ -34,18 +34,18 @@
     function doKeyDown(e) {
       if (e.keycode == 87) {          // w
         ctx.fillText("up", 100, 100);
-        socket.emit('move', { 1, 0});
+        socket.emit('move', {x:1, y:0});
       }
       if (e.keycode == 83) {          // s
         ctx.fillText("down", 100, 100);
-        socket.emit('move', {-1, 0});
+        socket.emit('move', {x:-1, y:0});
       }
       if (e.keycode == 65) {          // a
         ctx.fillText("left", 100, 100);
-        socket.emit('move', { 0, 1});
+        socket.emit('move', {x:0, y:1});
       if (e.keycode == 68) {          // d
         ctx.fillText("right", 100, 100);
-        socket.emit('move', { 0,-1});
+        socket.emit('move', {x:0, y:-1});
       }
     }
   </script>

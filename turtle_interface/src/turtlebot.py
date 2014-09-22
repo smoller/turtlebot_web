@@ -24,7 +24,11 @@ def move_page():
 
 @socketio.on('move', namespace='/drive')
 def move(data):
+<<<<<<< Updated upstream
     print(data['x'], data['y'])
+=======
+    print 'moving now?'
+>>>>>>> Stashed changes
     mover.move(data['x'], data['y'])
 
 if __name__ == '__main__':

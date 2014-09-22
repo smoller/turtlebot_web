@@ -1,5 +1,12 @@
 <launch>
+  
+  <arg name="sim" default="true" />
 
-   <node pkg="turtle_interface" name="turtle_interface" type="turtlebot.py" output="screen" />
+  <group if="$(arg sim)">
+    <remap from="/cmd_vel" to="/cmd_vel_mux/input/navi" />
+  </group>
+
+  <node pkg="turtlesim" name="turtlesim" type="turtlesim_node" output="screen" />
+  <node pkg="turtle_interface" name="turtle_interface" type="turtlebot.py" output="screen" />
 
 </launch>
