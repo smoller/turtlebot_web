@@ -9,7 +9,7 @@
     </canvas>
   </div>
 
-  <script src="static/js/socket.io.js"></script>
+  <script src="static/js/socket.io.min.js"></script>
   <script src="static/js/jquery-2.1.1.min.js"></script>
   <script src="static/js/gamecontroller.min.js"></script>
   <script src="static/js/drive.js"></script>
@@ -18,25 +18,26 @@
     var socket = io.connect('http://'+document.domain+':'+location.port+'drive')
     canvas.addEventListener('keydown', doKeyDown, true);
 
-    canvas_context = canvas.getContext("2d");
-    canvas_context.fillStyle("green");
-    canvas_context.font = "bold 16px Arial";
+    ctx = canvas.getContext("2d");
+    ctx.fillStyle = "rgb(200,0,0)";
+    ctx.fillRect(10, 10, 55, 50);
+    ctx.font = "bold 16px Arial";
 
     function doKeyDown(e) {
       if (e.keycode == 87) {          // w
+        ctx.fillText("up", 100, 100);
         socket.emit('move', { 1, 0});
-        canvas_context.fillText("up", 100, 100);
       }
       if (e.keycode == 83) {          // s
+        ctx.fillText("down", 100, 100);
         socket.emit('move', {-1, 0});
-        canvas_context.fillText("down", 100, 100);
       }
       if (e.keycode == 65) {          // a
+        ctx.fillText("left", 100, 100);
         socket.emit('move', { 0, 1});
-        canvas_context.fillText("left", 100, 100);
       if (e.keycode == 68) {          // d
+        ctx.fillText("right", 100, 100);
         socket.emit('move', { 0,-1});
-        canvas_context.fillText("right", 100, 100);
       }
     }
   </script>
