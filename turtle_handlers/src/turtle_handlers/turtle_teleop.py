@@ -8,16 +8,15 @@ class TurtleTeleOp(object):
         rospy.init_node('turtlebot_move', anonymous=True)
         self.pub = rospy.Publisher(topic, Twist, queue_size=1)
         self.twist = Twist()
-        self.speed = self.omega = 0
 
         self._max_speed = 0.4 # m/s
         self._max_omega = 0.3 # rad/s
         self._range = (-1, 1)
 
     def set_move(self, speed, omega):
-        self.speed, self.omega = speed, omega
+        self.twist.linear.x, self.twist.angular.z = speed, omega
 
-    def move(self, y, x):
+    def move(self, x, y):
         # receive range in [-1, 1]
         speed = self._clamp(y, *self._range) * self._max_speed
         omega = self._clamp(x, *self._range) * self._max_omega
