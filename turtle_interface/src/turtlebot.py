@@ -24,6 +24,7 @@ def move_page():
 
 @socketio.on('move', namespace='/drive')
 def move(data):
+    print(data['x'], data['y'])
     mover.move(data['x'], data['y'])
 
 if __name__ == '__main__':

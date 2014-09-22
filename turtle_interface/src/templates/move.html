@@ -4,6 +4,13 @@
 </head>
 
 <body>
+  <div id="buttons"> 
+      <button id="up">Up</button>
+      <button id="down">Down</button>
+      <button id="left">Left</button>
+      <button id="right">Right</button>
+  </div>
+
   <div id="mvcanvasdiv">
     <canvas id="mvcanvas" width="800" height="500" style="position: absolute; z-index: 5; left: 288px; top: 0px; -ms-touch-action: none;">
     </canvas>
@@ -13,6 +20,7 @@
   <script src="static/js/jquery-2.1.1.min.js"></script>
   <script src="static/js/gamecontroller.min.js"></script>
   <script src="static/js/drive.js"></script>
+  <!--
   <script>
     var canvas = document.getElementById("mvcanvas");
     var socket = io.connect('http://'+document.domain+':'+location.port+'drive')
@@ -41,6 +49,7 @@
       }
     }
   </script>
+  -->
 
 </body>
 
