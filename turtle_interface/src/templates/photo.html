@@ -1,0 +1,25 @@
+<html>
+<head>
+  <title>photo</title>
+</head>
+
+<body>
+  <div id="buttons"> 
+      <button id="take_photo">take photo</button>
+  </div>
+
+  <canvas id="imagecanvas" width="800" height="500"></canvas>
+  <script>
+    var canvas = document.getElementById('imagecanvas');
+    var ctx = canvas.getContext('2d');
+    var image_obj = new Image();
+    image_obj.onload = function() {
+      ctx.drawImage(image_obj, 50, 50, 500, 500);
+    }
+    image_obj.src = 'http://blog.phaseone.com/wp-content/uploads/The-Last-Light-Final-Image.jpg';
+  </script>
+
+  <script src="static/js/socket.io.min.js"></script>
+  <script src="static/js/jquery-2.1.1.min.js"></script>
+  </body>
+</html>
