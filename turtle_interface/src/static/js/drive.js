@@ -1,14 +1,5 @@
 $(document).ready(function() {
     var socket = io.connect('http://' + document.domain + ':' + location.port + '/drive'); 
-    GameController.init({
-        left: {
-            type: 'joystick',
-            touchMove: function(details) {
-                socket.emit('move', {x:details.normalizedX, y:details.normalizedY});
-            }
-        },
-        right: {}
-    });
 
     $("#up").click(function() {
         socket.emit('move', {x:0, y:1});
@@ -53,4 +44,18 @@ $(document).ready(function() {
             console.log("I don't know that direction");
         }
     }
+
+    var dance = function() {
+        socket.emit('move', {x:1, y:0});
+        socket.emit('move', {x:0, y:1});
+        socket.emit('move', {x:1, y:0});
+        socket.emit('move', {x:0, y:1});
+        socket.emit('move', {x:1, y:0});
+        socket.emit('move', {x:0, y:1});
+        socket.emit('move', {x:1, y:0});
+        socket.emit('move', {x:0, y:1});
+    }
+
+    annyang.addCommands(voice_commands);
+    annyang.start();
 });
