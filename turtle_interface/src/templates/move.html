@@ -1,55 +1,27 @@
 <html>
 <head>
   <title>move</title>
+  <link rel="stylesheet" href="static/css/bootstrap.min.css">
 </head>
 
 <body>
-  <div id="buttons"> 
-      <button id="up">Up</button>
-      <button id="down">Down</button>
-      <button id="left">Left</button>
-      <button id="right">Right</button>
+  <div class="container-fluid">
+      <div class="row" id="buttons"> 
+          <button id="up">Up</button>
+          <button id="down">Down</button>
+          <button id="left">Left</button>
+          <button id="right">Right</button>
+      </div>
+      <div class="row">
+          <h2>Voice command description</h2>
+      </div>
   </div>
 
-  <div id="mvcanvasdiv">
-    <canvas id="mvcanvas" width="800" height="500" style="position: absolute; z-index: 5; left: 288px; top: 0px; -ms-touch-action: none;">
-    </canvas>
-  </div>
 
   <script src="static/js/socket.io.min.js"></script>
   <script src="static/js/jquery-2.1.1.min.js"></script>
-  <script src="static/js/gamecontroller.min.js"></script>
+  <script src="static/js/annyang.min.js"></script>
   <script src="static/js/drive.js"></script>
-  <!--
-  <script>
-    var canvas = document.getElementById("mvcanvas");
-    var socket = io.connect('http://'+document.domain+':'+location.port+'drive')
-    canvas.addEventListener('keydown', doKeyDown, true);
-
-    ctx = canvas.getContext("2d");
-    ctx.fillStyle = "rgb(200,0,0)";
-    ctx.fillRect(10, 10, 55, 50);
-    ctx.font = "bold 16px Arial";
-
-    function doKeyDown(e) {
-      if (e.keycode == 87) {          // w
-        ctx.fillText("up", 100, 100);
-        socket.emit('move', { 1, 0});
-      }
-      if (e.keycode == 83) {          // s
-        ctx.fillText("down", 100, 100);
-        socket.emit('move', {-1, 0});
-      }
-      if (e.keycode == 65) {          // a
-        ctx.fillText("left", 100, 100);
-        socket.emit('move', { 0, 1});
-      if (e.keycode == 68) {          // d
-        ctx.fillText("right", 100, 100);
-        socket.emit('move', { 0,-1});
-      }
-    }
-  </script>
-  -->
 
 </body>
 
