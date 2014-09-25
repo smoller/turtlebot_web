@@ -13,6 +13,8 @@ class ImageSubscriber:
     def __init__(self, topic='/camera/rgb/image_color', active=False):
         self.topic = topic
         self.bridge = CvBridge()
+        self.persistent = True
+        self.cv_image = None
         if active: self._activate()
         
     def _activate(self):
@@ -29,6 +31,9 @@ class ImageSubscriber:
 
     def photo(self):
         """take a single image and return it"""
+        self.cv_image = None
         self._activate()
-        # deactivate?
+        while self.cv_image is None:
+            rospy.sleep(1.0)
 
+        return self.cv_image
