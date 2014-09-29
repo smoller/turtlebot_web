@@ -1,6 +1,6 @@
 from math import sin, cos
-import rospy
 
+import rospy
 from sensor_msgs.msg import LaserScan
 
 class ObstacleDetector():
@@ -23,7 +23,7 @@ class ObstacleDetector():
                   if j > 0]
 
         self.readings = self.polar_to_cartesian(ranges, angles)
-        self.detected = any([y < self.thd for x, y in self.readings 
+        self.detected = any([y < self._obs_thd for x, y in self.readings 
                              if abs(x) < self._width])
 
     def is_obstacle(self):

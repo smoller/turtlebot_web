@@ -5,7 +5,7 @@ from obstacle_detector import ObstacleDetector
 
 class TurtleTeleOp(object):
 
-    def __init__(self, topic='cmd_vel_mux/input/navi', obstacle_detect=True):
+    def __init__(self, topic='cmd_vel_mux/input/navi', obstacle_detect=False):
         rospy.init_node('turtlebot_move', anonymous=True)
         self.pub = rospy.Publisher(topic, Twist, queue_size=1)
         self.twist = Twist()
@@ -14,7 +14,9 @@ class TurtleTeleOp(object):
         self._max_omega = 0.3 # rad/s
         self._range = (-1, 1)
         self.obstacle_detect = obstacle_detect
-        if obstacle_detect: obs_detector = ObstacleDetector()
+        if obstacle_detect: 
+            obs_detector = ObstacleDetector()
+            rospy.spin()
 
     def set_move(self, speed, omega):
         self.twist.linear.x, self.twist.angular.z = speed, omega
