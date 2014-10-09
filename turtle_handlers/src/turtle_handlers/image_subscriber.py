@@ -15,7 +15,6 @@ class ImageSubscriber:
         self.bridge = CvBridge()
         self.cv_image = None
         if active: self._activate()
-        rospy.init_node('image_subscriber', anonymous=True)
         
     def _activate(self):
         self.image_sub = rospy.Subscriber(self.topic, Image, self._callback, queue_size=1)
