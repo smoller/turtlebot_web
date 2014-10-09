@@ -43,7 +43,7 @@ def map(msg):
     pass
 
 @socketio.on('photo', namespace='/photo')
-def photo(msg):
+def photo():
     photo = image_sub.photo()
     if photo is not None:
         base64_photo = base64.encodestring(photo)
