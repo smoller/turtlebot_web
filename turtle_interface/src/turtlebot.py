@@ -22,7 +22,7 @@ app.config.update(
 def index():
     return render_template('index.html')
 
-@app.route('demo')
+@app.route('/demo')
 def demo():
     return render_template('demo.html')
 
