@@ -44,10 +44,10 @@ def map():
 @socketio.on('photo', namespace='/photo')
 def photo():
     photo = image_sub.photo()
-    base64_photo = base64.encodestring(photo)
-    json_photo = { value:base64_photo }
-
-    emit('new photo', json_photo)
+    if photo is not None:
+        base64_photo = base64.encodestring(photo)
+        json_photo = { value:base64_photo }
+        emit('new photo', json_photo)
 
 
 
