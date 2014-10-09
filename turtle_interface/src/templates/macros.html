@@ -1,0 +1,5 @@
+{% macro render_navitem(endpoint, display, cls='', active='') %}
+<li {% if request.endpoint == endpoint or active == endpoint %} class='active' {% endif %}>
+    <a class='{{cls}}' href="{{url_for(endpoint)}}">{{display}}</a>
+</li>
+{% endmacro %}

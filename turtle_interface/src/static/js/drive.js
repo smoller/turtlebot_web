@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    var socket = io.connect('http://' + document.domain + ':' + location.port + '/drive'); 
+    var socket = io.connect('http://' + document.domain + ':' + location.port + '/move'); 
 
     $("#up").click(function() {
         socket.emit('move', {x:0, y:1});
