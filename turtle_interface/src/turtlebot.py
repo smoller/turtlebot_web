@@ -40,11 +40,6 @@ def map():
 
 @socketio.on('photo', namespace='/photo')
 def photo():
-    """
-    photo = photo.map()
-    json_photo = json(photo)
-    emit('new photo', json_photo)
-    """
     pass
 
 

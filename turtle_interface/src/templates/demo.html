@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block main %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-2" id="left_column">
+            <ul class="nav nav-stacked" id="sidebar">
+              <li><a href="#move">Movement</a></li>
+              <li><a href="#photo">Photo</a></li>
+              <li><a href="#map">Map</a></li>
+              <li><a href="#voice">Voice Commands</a></li>
+            </ul>
+        </div>
+        <div class="col-md-10">
+            <div id="move">
+                <h3>Movement</h3>
+                <p>Push the buttons below to move the robot</p>
+                <div id="buttons"> 
+                  <button class="btn btn-info" id="up">Up</button>
+                  <button class="btn btn-info" id="down">Down</button>
+                  <button class="btn btn-info" id="left">Left</button>
+                  <button class="btn btn-info" id="right">Right</button>
+                </div> 
+            </div>
+            <div id="photo">
+                <h3 class="panel-title">Take A Photo</h3>
+                <div class="panel panel-info">
+                    <div class="panel-body" id="photo-panel">
+                    </div>
+                    <div class="panel-footer"><button class="btn btn-info" id="photo-button">Take A Photo</button></div>
+               </div>
+            </div>
+            <div id="map">
+            </div>
+            <div id="voice">
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{{ super() }}
+<script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
+<script src="{{ url_for('static', filename='js/drive.js') }}"></script>
+<script src="{{ url_for('static', filename='js/photo.js') }}"></script>
+{% block scripts %}
