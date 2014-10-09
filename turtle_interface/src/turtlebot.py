@@ -34,7 +34,7 @@ def move(data):
     mover.move(data['x'], data['y'])
 
 @socketio.on('map', namespace='/map') 
-def map(): 
+def map(msg): 
     """
     map = mapper.map()
     json_map = json(map)
@@ -43,7 +43,7 @@ def map():
     pass
 
 @socketio.on('photo', namespace='/photo')
-def photo():
+def photo(msg):
     photo = image_sub.photo()
     if photo is not None:
         base64_photo = base64.encodestring(photo)
