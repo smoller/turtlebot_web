@@ -39,8 +39,12 @@
     </div>
 </div>
 {% endblock %}
-{{ super() }}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/jquery-2.1.1.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
 <script src="{{ url_for('static', filename='js/drive.js') }}"></script>
 <script src="{{ url_for('static', filename='js/photo.js') }}"></script>
-{% block scripts %}
+{% endblock %}
+

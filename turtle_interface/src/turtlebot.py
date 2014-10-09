@@ -30,6 +30,7 @@ def demo():
 # Socket events
 @socketio.on('move', namespace='/move')
 def move(data):
+    print (data['x'], data['y'])
     mover.move(data['x'], data['y'])
 
 @socketio.on('map', namespace='/map') 
