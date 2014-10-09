@@ -1,14 +1,17 @@
 #!/usr/bin/env python2
+import base64
 
 from flask import Flask, render_template
 from flask.ext.socketio import SocketIO, emit
 
 from turtle_handlers.turtle_teleop import TurtleTeleOp
+from turtle_handlers.image_subscriber import ImageSubscriber
 
 app = Flask(__name__)
 
 socketio = SocketIO(app)
 mover = TurtleTeleOp()
+image_sub = ImageSubscriber()
 
 app.config.update(
     DEBUG=True,
@@ -40,7 +43,11 @@ def map():
 
 @socketio.on('photo', namespace='/photo')
 def photo():
-    pass
+    photo = image_sub.photo()
+    if photo is not None:
+        base64_photo = base64.encodestring(photo)
+        json_photo = { value:base64_photo }
+        emit('new photo', json_photo)
 
 
 

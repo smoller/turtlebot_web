@@ -30,7 +30,7 @@ class ImageSubscriber:
         except CvBridgeError as e:
             print e
 
-    def photo(self):
+    def photo(self, enc='.png'):
         """take a single image and return it"""
         try:
             msg = rospy.wait_for_message(self.topic, Image, timeout=10)
@@ -39,4 +39,4 @@ class ImageSubscriber:
 
         self._callback(msg)
 
-        return self.cv_image
+        return cv2.imencode(enc, self.cv_image)[1]
