@@ -1,14 +1,11 @@
+var photo_socket = io.connect('http://' + document.domain + ':' + location.port + '/photo'); 
 
-$(document).ready(function() {
-    var socket = io.connect('http://' + document.domain + ':' + location.port + '/photo'); 
-
-    socket.on('new photo', function(data) {
-        
-    });
-
-    socket.emit('photo');
-
-    $('#photo-button').click(function() {
-        socket.emit('photo');
-    }); 
+photo_socket.on('new photo', function(data) {
+    $('#photo-panel').html('<img src="'+data.value+'">');
 });
+
+photo_socket.emit('photo');
+
+$('#photo-button').click(function(event) {
+    photo_socket.emit('photo');
+}); 

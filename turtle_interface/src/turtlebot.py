@@ -34,7 +34,7 @@ def move(data):
     mover.move(data['x'], data['y'])
 
 @socketio.on('map', namespace='/map') 
-def map(): 
+def map(msg): 
     """
     map = mapper.map()
     json_map = json(map)
