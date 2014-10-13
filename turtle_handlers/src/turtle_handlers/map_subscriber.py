@@ -31,6 +31,10 @@ class MapSubscriber:
     def get_map(self):
         return self.grid
 
+    def get_map_cv2(self):
+        if self.grid is None: return None
+        return np.array([[(el,0,0) for el in row] for row in self.grid], np.uint8) 
+
 if __name__ == '__main__':
     rospy.init_node('test_map_sub')
     sub = MapSubscriber()
@@ -40,10 +44,7 @@ if __name__ == '__main__':
     while not rospy.is_shutdown():
         r.sleep()
 
-        map_grid = sub.get_map()
-        if map_grid is not None:
-            image = np.zeros((800,800,3), np.uint8)
-            image = np.array([[(el,0,0) for el in row] for row in map_grid], np.uint8) 
-            
+        image = sub.get_map_cv2()
+        if image is not None:
             cv2.imshow('map', image)
             cv2.waitKey(1)
