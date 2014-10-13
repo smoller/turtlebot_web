@@ -32,6 +32,12 @@
                </div>
             </div>
             <div id="map">
+                <h3>Current Map</h3>
+                <div class="panel panel-info">
+                    <div class="panel-body" id="map-panel">
+                    </div>
+                    <div class="panel-footer"><button class="btn btn-info" id="map-button">show map</button></div>
+               </div>
             </div>
             <div id="voice">
             </div>
@@ -47,4 +53,5 @@
 <script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
 <script src="{{ url_for('static', filename='js/drive.js') }}"></script>
 <script src="{{ url_for('static', filename='js/photo.js') }}"></script>
+<script src="{{ url_for('static', filename='js/map_image.js') }}"></script>
 {% endblock %}

@@ -35,6 +35,10 @@ class MapSubscriber:
         if self.grid is None: return None
         return np.array([[(el,0,0) for el in row] for row in self.grid], np.uint8) 
 
+    def get_map_image(self, enc='.png'):
+        cv_image = self.get_map_cv2()
+        return cv2.imencode(enc, cv_image)[1]
+
 if __name__ == '__main__':
     rospy.init_node('test_map_sub')
     sub = MapSubscriber()
