@@ -24,5 +24,26 @@ class MapSubscriber:
         self.map_sub = None
         
     def _callback(self, data):
-        self._grid_width, self._grid_height = data.width, data.height
-        self.grid = np.reshape(np.array(data.data, dtype=np.uint8), (data.height, data.width))
+        self._grid_width, self._grid_height = data.info.width, data.info.height
+        self.grid = np.reshape(np.array(data.data, dtype=np.uint8), 
+            (self._grid_height, self._grid_width))
+
+    def get_map(self):
+        return self.grid
+
+if __name__ == '__main__':
+    rospy.init_node('test_map_sub')
+    sub = MapSubscriber()
+    cv2.namedWindow('map')
+
+    r = rospy.Rate(1)
+    while not rospy.is_shutdown():
+        r.sleep()
+
+        map_grid = sub.get_map()
+        if map_grid is not None:
+            image = np.zeros((800,800,3), np.uint8)
+            image = np.array([[(el,0,0) for el in row] for row in map_grid], np.uint8) 
+            
+            cv2.imshow('map', image)
+            cv2.waitKey(1)
