@@ -11,6 +11,7 @@
   </group>
 
   <group unless="$(arg sim)">
+    <include file="$(find comp3431)/launch/hector.launch" />  
   </group>
 
 </launch>

@@ -1,7 +1,7 @@
 var map_socket = io.connect('http://' + document.domain + ':' + location.port + '/map'); 
 
 map_socket.on('new map', function(data) {
-    $('#map-panel').html('<img src="data:image/png;base64,'+data.value+'">');
+    $('#map-panel').html('<img src="'+data.value+'">');
 });
 
 map_socket.emit('map');

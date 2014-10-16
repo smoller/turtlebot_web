@@ -1,4 +1,5 @@
-#!/bin/env python2
+#!/usr/bin/env python2
+
 import base64
 import cv2
 
@@ -40,18 +41,16 @@ def move(data):
 def map_image(): 
     map_image = map_sub.get_map_image()
     if map_image is not None:
-        base64_map = base64.encodestring(map_image)
-        json_map = { 'value':base64_map }
-        emit('new map', json_map)
+        emit('new map', image_to_json(map_image))
 
 @socketio.on('photo', namespace='/photo')
 def photo():
-    print 'taking photo'
     photo = image_sub.photo()
     if photo is not None:
-        base64_photo = base64.encodestring(photo)
-        json_photo = { 'value':base64_photo }
-        emit('new photo', json_photo)
+        emit('new photo', image_to_json(photo))
+
+def image_to_json(img):
+    return {'value':'data:image/png;base64,'+base64.encodestring(img)}
 
 if __name__ == '__main__':
     socketio.run(app, host='0.0.0.0')
