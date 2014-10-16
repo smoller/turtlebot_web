@@ -10,4 +10,7 @@
     <node pkg="turtle_handlers" name="turtle_handlers" type="sim_map_pub.py" />
   </group>
 
+  <group unless="$(arg sim)">
+  </group>
+
 </launch>

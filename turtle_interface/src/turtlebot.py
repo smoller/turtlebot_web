@@ -39,11 +39,9 @@ def move(data):
 @socketio.on('map', namespace='/map') 
 def map_image(): 
     map_image = map_sub.get_map_image()
-
     if map_image is not None:
         base64_map = base64.encodestring(map_image)
         json_map = { 'value':base64_map }
-        print json_map
         emit('new map', json_map)
 
 @socketio.on('photo', namespace='/photo')

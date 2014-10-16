@@ -40,6 +40,12 @@
                </div>
             </div>
             <div id="voice">
+                <h3>Say Hi</h3>
+                <div class="panel panel-info">
+                    <div class="panel-body" id="voice-panel">
+                    </div>
+                    <div class="panel-footer"><button class="btn btn-info" id="voice-button">say hi</button></div>
+               </div>
             </div>
         </div>
     </div>
@@ -51,7 +57,13 @@
 <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/socket.io.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
+<script src="{{ url_for('static', filename='js/annyang.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/drive.js') }}"></script>
 <script src="{{ url_for('static', filename='js/photo.js') }}"></script>
 <script src="{{ url_for('static', filename='js/map_image.js') }}"></script>
+<script type="text/javascript">
+  $('#voice-button').click(function(event) {
+    speechSynthesis.speak(new SpeechSynthesisUtterance('Hello'));
+  }); 
+</script>
 {% endblock %}
