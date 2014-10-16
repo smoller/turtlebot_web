@@ -23,7 +23,6 @@ class ImageSubscriber:
         self.image_sub = None
         
     def _callback(self, data):
-        print 'message received'
         try:
             self.cv_image = self.bridge.imgmsg_to_cv2(data, "bgr8")
         except CvBridgeError as e:

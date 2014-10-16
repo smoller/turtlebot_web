@@ -2,7 +2,6 @@
   
   <arg name="sim" default="true" />
 
-  <node pkg="turtle_interface" name="turtle_interface" type="turtlebot.py" output="screen" />
 
   <group if="$(arg sim)">
     <remap from="/turtle1/cmd_vel" to="/cmd_vel_mux/input/navi" />
@@ -11,7 +10,10 @@
   </group>
 
   <group unless="$(arg sim)">
+    <param name="use_sim_time" value="false" />
     <include file="$(find comp3431)/launch/hector.launch" />  
   </group>
+
+  <node pkg="turtle_interface" name="turtle_interface" type="turtlebot.py" output="screen" />
 
 </launch>

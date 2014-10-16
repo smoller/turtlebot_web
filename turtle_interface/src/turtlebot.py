@@ -1,7 +1,6 @@
 #!/usr/bin/env python2
 
 import base64
-import cv2
 
 from flask import Flask, render_template
 from flask.ext.socketio import SocketIO, emit

@@ -32,6 +32,3 @@ class ObstacleDetector():
     @staticmethod
     def polar_to_cartesian(ranges, angles):
         return [(r*cos(a), r*sin(a)) for (r, a) in zip(ranges, angles)]
-
-if __name__ == '__main__':
-    print(ObstacleDetector.polar_to_cartesian([1, 1, 1], [0, 0.5, 1]))
