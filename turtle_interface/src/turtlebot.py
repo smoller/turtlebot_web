@@ -29,14 +29,9 @@ def index():
 def demo():
     return render_template('demo.html')
 
-@app.route('/tour')
+@app.route('/tour/<name>')
 def tour():
-    waypoints={
-            'time':'',
-            'name':'',
-            'script':'',
-            'content':'',}
-
+    return render_template('tour.html', tour=name)
 
 # Socket events
 @socketio.on('move', namespace='/move')
