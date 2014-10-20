@@ -10,17 +10,30 @@
             </ul>
         </div>
         <div class="col-md-10">
-            <div id="create_tour">
-                <h3>Create Tour</h3>
-                <p>Enter name of tour</p>
-                <form class="navbar-form navbar-left" method="post">
-                  {{form.hidden_tag()}}
+          <div class="panel panel-default">
+            <div class="panel-heading">Tour Name</div>
+            <div class="panel-body">
+              <form class="navbar-form navbar-left" method="post">
+                {{form.hidden_tag()}}
                   <div class="form-group">
                     {{ form.name(size=30, maxlength=140) }}
                   </div>
                   <button type="submit" class="btn btn-default">Submit</button>
-                </form>
+              </form>
             </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading">Waypoint 1</div>
+            <div class="panel-body">
+              <form class="navbar-form navbar-left" method="post">
+                {{form.hidden_tag()}}
+                  <div class="form-group">
+                    {{ form.name(size=30, maxlength=140) }}
+                  </div>
+                  <button type="submit" class="btn btn-default">Submit</button>
+              </form>
+            </div>
+          </div>
         </div>
     </div>
 </div>

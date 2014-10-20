@@ -3,4 +3,8 @@ from wtforms import TextField
 from wtforms.validators import Required
 
 class TourForm(Form):
-    name = TextField('Tour name', validators=[Required()])
+    name = TextField('Name', validators=[Required()])
+
+class WaypointForm(Form):
+    name = TextField('Name', validators=[Required()])
+    script = TextField('Script')
