@@ -34,8 +34,8 @@ def tour():
     tour = {}
     tour_name = 'tour'
     tour_path = 'assets/{}.json'.format(tour_name)
-    with open(tour_path) as f:
-        tour = json.load(f)
+    with open(tour_path, 'r') as f:
+        tour = f.read()
 
     return render_template('tour.html', tour=tour)
 
