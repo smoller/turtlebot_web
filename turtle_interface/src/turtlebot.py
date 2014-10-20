@@ -1,18 +1,16 @@
 #!/usr/bin/env python2
 
 import base64
+import json
 
 from flask import Flask, render_template
 from flask.ext.socketio import SocketIO, emit
-from flask.ext.sqlalchemy import SQLAlchemy
 
 from turtle_handlers.teleop import TurtleTeleOp
 from turtle_handlers.image_subscriber import ImageSubscriber
 from turtle_handlers.map_subscriber import MapSubscriber
 
 app = Flask(__name__)
-db = SQLAlchemy(app)
-app.config.from_object('config')
 app.config.update(
     DEBUG=True,
 )
@@ -21,7 +19,6 @@ socketio = SocketIO(app)
 mover = TurtleTeleOp()
 image_sub = ImageSubscriber()
 map_sub = MapSubscriber()
-
 
 # views
 @app.route('/')
@@ -34,12 +31,13 @@ def demo():
 
 @app.route('/tour')
 def tour():
-    waypoints={
-            'time':'',
-            'name':'',
-            'script':'',
-            'content':'',}
+    tour = {}
+    tour_name = 'tour'
+    tour_path = 'assets/{}.json'.format(tour_name)
+    with open(tour_path) as f:
+        tour = json.load(f)
 
+    return render_template('tour.html', tour=tour)
 
 # Socket events
 @socketio.on('move', namespace='/move')

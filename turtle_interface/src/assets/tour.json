@@ -1,0 +1,17 @@
+{
+  "name":"tour example",
+  "waypoints":[
+    {"name":"waypoint 1",
+     "location":[0,0],
+     "script":"welcome to this tour",
+     "content":["some image?"
+      ]
+    },
+    {"name":"waypoint 2",
+     "location":[1,0],
+     "script":"thank you for accompanying me on this tour",
+     "content":["some image?"
+      ]
+    }
+  ]
+}
