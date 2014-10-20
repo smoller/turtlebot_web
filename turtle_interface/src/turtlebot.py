@@ -34,11 +34,11 @@ def demo():
 
 @app.route('/tour')
 def tour():
-    waypoints
-        time
-        name
-        script
-        content
+    waypoints={
+            'time':'',
+            'name':'',
+            'script':'',
+            'content':'',}
 
 
 # Socket events
