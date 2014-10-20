@@ -15,10 +15,12 @@ class MapSubscriber:
         self.grid = None
         self._grid_height = self._grid_width = 0
 
-        if active: self._activate()
+        if active: 
+            self._activate()
         
     def _activate(self):
-        self.map_sub = rospy.Subscriber(self.topic, OccupancyGrid, self._callback, queue_size=1)
+        self.map_sub = rospy.Subscriber(self.topic, OccupancyGrid, 
+                                        self._callback, queue_size=1)
 
     def _deactivate(self):
         self.map_sub = None
@@ -26,14 +28,16 @@ class MapSubscriber:
     def _callback(self, data):
         self._grid_width, self._grid_height = data.info.width, data.info.height
         self.grid = np.reshape(np.array(data.data, dtype=np.uint8), 
-            (self._grid_height, self._grid_width))
+                               (self._grid_height, self._grid_width))
 
     def get_map(self):
         return self.grid
 
     def get_map_cv2(self):
-        if self.grid is None: return None
-        return np.array([[(el,0,0) for el in row] for row in self.grid], np.uint8) 
+        if self.grid is None: 
+            return None
+        return np.array([[(el, 0, 0) for el in row] for row in self.grid], 
+                        np.uint8) 
 
     def get_map_image(self, enc='.png'):
         cv_image = self.get_map_cv2()

@@ -53,7 +53,7 @@ def create_tour():
 # Socket events
 @socketio.on('move', namespace='/move')
 def move(data):
-    print (data['x'], data['y'])
+    print(data['x'], data['y'])
     mover.move(data['x'], data['y'])
 
 @socketio.on('map', namespace='/map') 
@@ -70,7 +70,7 @@ def photo():
 
 # utilities
 def image_to_json(img):
-    return {'value':'data:image/png;base64,'+base64.encodestring(img)}
+    return {'value': 'data:image/png;base64,'+base64.encodestring(img)}
 
 if __name__ == '__main__':
     socketio.run(app, host='0.0.0.0')
