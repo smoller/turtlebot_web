@@ -1,6 +1,7 @@
 #!/usr/bin/env python2
 
 import base64
+import json
 
 from flask import Flask, render_template
 from flask.ext.socketio import SocketIO, emit
@@ -19,7 +20,6 @@ mover = TurtleTeleOp()
 image_sub = ImageSubscriber()
 map_sub = MapSubscriber()
 
-
 # views
 @app.route('/')
 def index():
@@ -31,7 +31,13 @@ def demo():
 
 @app.route('/tour/<name>')
 def tour():
-    return render_template('tour.html', tour=name)
+    tour = {}
+    tour_name = 'tour'
+    tour_path = 'assets/{}.json'.format(tour_name)
+    with open(tour_path, 'r') as f:
+        tour = f.read()
+
+    return render_template('tour.html', tour=tour)
 
 # Socket events
 @socketio.on('move', namespace='/move')
