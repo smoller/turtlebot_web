@@ -8,9 +8,7 @@ from flask.ext.socketio import SocketIO, emit
 
 from forms import TourForm
 
-from turtle_handlers.teleop import TurtleTeleOp
-from turtle_handlers.image_subscriber import ImageSubscriber
-from turtle_handlers.map_subscriber import MapSubscriber
+from turtle_handlers import TurtleTeleOp, ImageSubscriber, MapSubscriber
 
 app = Flask(__name__)
 app.config.update(
