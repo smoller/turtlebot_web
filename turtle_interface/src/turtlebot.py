@@ -8,7 +8,10 @@ from flask.ext.socketio import SocketIO, emit
 
 from forms import TourForm
 
-from turtle_handlers import TurtleTeleOp, ImageSubscriber, MapSubscriber
+from turtle_handlers.teleop import TurtleTeleOp
+from turtle_handlers.image_subscriber import ImageSubscriber
+from turtle_handlers.map_subscriber import MapSubscriber
+from turtle_handlers.path_planner import PathPlanner
 
 app = Flask(__name__)
 app.config.update(
@@ -20,6 +23,7 @@ socketio = SocketIO(app)
 mover = TurtleTeleOp()
 image_sub = ImageSubscriber()
 map_sub = MapSubscriber()
+#path = PathPlanner()
 
 # views
 @app.route('/')
