@@ -1,12 +1,14 @@
 from flask.ext.wtf import Form
-from wtforms import TextField, FormField, FieldList, SubmitField
+from wtforms import TextField, TextAreaField, FormField, FieldList, SubmitField
 from wtforms.validators import Required
 
 class WaypointForm(Form):
     title = TextField('Name', validators=[Required()])
-    script = TextField('Script')
+    script = TextAreaField('Script')
+    def __init__(self, *args, **kwargs):
+        super(WaypointForm, self).__init__(csrf_enabled=False, *args, **kwargs)
+
 
 class TourForm(Form):
     name = TextField('Name', validators=[Required()])
     waypoints = FieldList(FormField(WaypointForm), min_entries=3)
-    submit = SubmitField("Submit")

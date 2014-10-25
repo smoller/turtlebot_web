@@ -3,7 +3,7 @@
 import base64
 import json
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask.ext.socketio import SocketIO, emit
 
 from forms import TourForm
@@ -42,9 +42,9 @@ def tour():
 
 @app.route('/create_tour', methods=['GET', 'POST'])
 def create_tour():
-    form = TourForm()
+    form = TourForm(request.form)
     if form.validate_on_submit():
-        print 'hi'
+        print form.data
 
     return render_template('create_tour.html', form=form)
 
