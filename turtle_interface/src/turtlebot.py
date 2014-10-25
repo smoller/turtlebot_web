@@ -44,7 +44,7 @@ def tour():
 def create_tour():
     form = TourForm(request.form)
     if form.validate_on_submit():
-        print form.data
+        print json.dumps(form.data, sort_keys=True, indent=4, separators=(',', ': '))
 
     return render_template('create_tour.html', form=form)
 
