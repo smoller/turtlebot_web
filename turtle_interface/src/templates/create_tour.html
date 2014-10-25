@@ -3,39 +3,30 @@
 {% block main %}
 
 <div class="container">
-    <div class="row">
-        <div class="col-md-2" id="left_column">
-            <ul class="nav nav-stacked" id="sidebar">
-              <li><a href="#create_tour">Create Tour</a></li>
-            </ul>
-        </div>
-        <div class="col-md-10">
-          <div class="panel panel-default">
-            <div class="panel-heading">Tour Name</div>
-            <div class="panel-body">
-              <form class="navbar-form navbar-left" method="post">
-                {{form.hidden_tag()}}
-                  <div class="form-group">
-                    {{ form.name(size=30, maxlength=140) }}
-                  </div>
-                  <button type="submit" class="btn btn-default">Submit</button>
-              </form>
-            </div>
-          </div>
-          <div class="panel panel-default">
-            <div class="panel-heading">Waypoint 1</div>
-            <div class="panel-body">
-              <form class="navbar-form navbar-left" method="post">
-                {{form.hidden_tag()}}
-                  <div class="form-group">
-                    {{ form.name(size=30, maxlength=140) }}
-                  </div>
-                  <button type="submit" class="btn btn-default">Submit</button>
-              </form>
-            </div>
-          </div>
-        </div>
+  <div class="row">
+    <div class="col-md-2" id="left_column">
+      <ul class="nav nav-stacked" id="sidebar">
+        <li><a href="#create_tour">Create Tour</a></li>
+      </ul>
     </div>
+    <div class="col-md-10">
+      {{ form.name }}
+      <div data-toggle="fieldset" id="waypoint-fieldset">
+        {{ form.waypoints.label }} 
+        <button type="button" data-toggle="fieldset-add-row" data-target="#waypoint-fieldset">+</button>
+        <table>
+          {% for waypoint in form.waypoints %}
+          <tr data-toggle="fieldset-entry">
+            <td> {{ waypoint.title }} </td>
+            <td> {{ waypoint.script }} </td>
+            <td><button type="button" data-toggle="fieldset-remove-row" id="waypoint-{{loop.index0}}-remove">-</button></td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+      {{ form.submit }}
+    </div>
+  </div>
 </div>
 {% endblock %}
 
@@ -44,4 +35,37 @@
 <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/socket.io.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
+<script>
+  $(function() {
+    $("div[data-toggle=fieldset]").each(function() {
+      var $this = $(this);
+
+      // add entry
+      $this.find("button[data-toggle=fieldset-add-row]").click(function() {
+        var target = $($(this).data("target"));
+        console.log(target);
+        var old_row = target.find("div[data-toggle=fieldset-entry]:last");
+        var row = old_row.clone(true, true);
+        console.log(row.find(":input")[0]);
+        var elem_id = row.find(":input")[0].id;
+        var elem_num = parseInt(elem_id.replace(/.*(\d{1,4})-.*/m,'$1')) + 1;
+        row.attr('data-id', elem_num);
+        row.find(":input").each(function() {
+          console.log(this);
+          var id = $(this).attr('id').replace('-' + (elem_num - 1) + '-', '-' + (elem_num) + '-');
+          $(this).attr('name', id).attr('id', id).val('').removeAttr("checked");
+        });
+        old_row.after(row);
+      });
+
+      // remove row
+      $this.find("button[data-toggle=fieldset-remove-row]").click(function() {
+        if ($this.find("div[data-toggle=fieldset-entry]").length > 1) {
+          var this_row = $(this).closest("div[data-toggle=fieldset-entry]");
+          this_row.remove();
+        }
+      });
+    });
+  });
+</script>
 {% endblock %}

@@ -44,7 +44,7 @@ def tour():
 def create_tour():
     form = TourForm()
     if form.validate_on_submit():
-        print form.name.data
+        print 'hi'
 
     return render_template('create_tour.html', form=form)
 
