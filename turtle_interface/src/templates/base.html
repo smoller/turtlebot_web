@@ -1,9 +1,11 @@
-<html>
-<head lang="en">
+{% extends "bootstrap/base.html" %}
+
+{% block title %}turtle tours{% endblock %}
+
+{% block head %}
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}{% endblock %}</title>
     {% block js_head %}
     {% endblock %}
     {% block css %}
@@ -17,16 +19,25 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     {% endblock %}
-</head>
-<body>
+{% endblock %}
+
+{% block navbar %}
     {% include 'navbar.html' %}
+{% endblock %}
+
+{% block content %}
+    {% for message in get_flashed_messages() %}
+      <div class="alert alert-warning">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ message }}
+      </div>
+    {% endfor %}
 
     {% block main %}
     {% endblock %}
+{% endblock %}
 
-    {% block scripts %}
+{% block scripts %}
     <script src="{{ url_for('static', filename='js/jquery-2.1.1.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-    {% endblock %}
-</body>
-</html>
+{% endblock %}

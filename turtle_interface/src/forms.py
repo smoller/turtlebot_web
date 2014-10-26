@@ -10,4 +10,4 @@ class WaypointForm(Form):
 
 class TourForm(Form):
     name = TextField('Name', validators=[Required()])
-    waypoints = FieldList(FormField(WaypointForm), min_entries=3)
+    waypoints = FieldList(FormField(WaypointForm), min_entries=1)
