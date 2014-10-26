@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
 
 {% block main %}
 
@@ -16,15 +17,15 @@
         <div class="panel panel-default">
           <div class="panel-heading">Tour Name</div>
           <div class="panel-body">
-            {{ forms.render_field(form.name) }}
+            {{ wtf.form_field(form.name) }}
           </div>
         </div>
         {% for waypoint in form.waypoints %}
         <div class="panel panel-default">
           <div class="panel-heading">Waypoint {{ loop.index }}</div>
           <div class="panel-body">
-            {{ forms.render_field(waypoint.title) }}
-            {{ forms.render_field(waypoint.script) }}
+            {{ wtf.form_field(waypoint.title) }}
+            {{ wtf.form_field(waypoint.script) }}
           </div>
         </div>
         {% endfor %}
