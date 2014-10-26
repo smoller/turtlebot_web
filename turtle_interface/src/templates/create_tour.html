@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block main %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-2" id="left_column">
+      <ul class="nav nav-stacked" id="sidebar">
+        <li><a href="#create_tour">Create Tour</a></li>
+      </ul>
+    </div>
+    <div class="col-md-10">
+      <form method="post" action="">
+        {% import 'forms.html' as forms %}
+        {{ form.hidden_tag() }}
+        <div class="panel panel-default">
+          <div class="panel-heading">Tour Name</div>
+          <div class="panel-body">
+            {{ forms.render_field(form.name) }}
+          </div>
+        </div>
+        {% for waypoint in form.waypoints %}
+        <div class="panel panel-default">
+          <div class="panel-heading">Waypoint {{ loop.index }}</div>
+          <div class="panel-body">
+            {{ forms.render_field(waypoint.title) }}
+            {{ forms.render_field(waypoint.script) }}
+          </div>
+        </div>
+        {% endfor %}
+        <input class="btn btn-primary" value="Add" id="add_more">
+        <input class="btn btn-primary" type="submit" value="Save">
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/jquery-2.1.1.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/socket.io.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
+<script>
+  $('#add_more').click(function() {
+    clone_field_list('div.panel:last');
+  });
+
+  function clone_field_list(selector) {
+    var new_element = $(selector).clone(true);
+    var elem_id = new_element.find(':input')[0].id;
+    console.log(elem_id);
+    var elem_num = parseInt(elem_id.replace(/.*-(\d{1,4})-.*/m, '$1')) + 1;
+    console.log(elem_num);
+    new_element.find(':input').each(function() {
+      var id = $(this).attr('id').replace('-' + (elem_num - 1) + '-', '-' + elem_num + '-');
+      $(this).attr({'name': id, 'id': id}).val('').removeAttr('checked');
+    });
+    new_element.find('label').each(function() {
+      var new_for = $(this).attr('for').replace('-' + (elem_num - 1) + '-', '-' + elem_num + '-');
+      $(this).attr('for', new_for);
+    });
+    new_element.find('div.panel-heading').each(function() {
+      var new_heading = $(this).html().replace(elem_num, (elem_num + 1));
+      $(this).html(new_heading);
+    });
+
+    $(selector).after(new_element);
+  } 
+</script>
+{% endblock %}

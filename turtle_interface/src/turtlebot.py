@@ -3,22 +3,23 @@
 import base64
 import json
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask.ext.socketio import SocketIO, emit
 
-from turtle_handlers.teleop import TurtleTeleOp
-from turtle_handlers.image_subscriber import ImageSubscriber
-from turtle_handlers.map_subscriber import MapSubscriber
+from forms import TourForm
+from turtle_handlers import TurtleTeleOp, ImageSubscriber, MapSubscriber, PathPlanner
 
 app = Flask(__name__)
 app.config.update(
     DEBUG=True,
+    SECRET_KEY='somesecretkey',
 )
 
 socketio = SocketIO(app)
 mover = TurtleTeleOp()
 image_sub = ImageSubscriber()
 map_sub = MapSubscriber()
+#path = PathPlanner()
 
 # views
 @app.route('/')
@@ -39,10 +40,18 @@ def tour():
 
     return render_template('tour.html', tour=tour)
 
+@app.route('/create_tour', methods=['GET', 'POST'])
+def create_tour():
+    form = TourForm(request.form)
+    if form.validate_on_submit():
+        print json.dumps(form.data, sort_keys=True, indent=4, separators=(',', ': '))
+
+    return render_template('create_tour.html', form=form)
+
 # Socket events
 @socketio.on('move', namespace='/move')
 def move(data):
-    print (data['x'], data['y'])
+    print(data['x'], data['y'])
     mover.move(data['x'], data['y'])
 
 @socketio.on('map', namespace='/map') 
@@ -59,7 +68,7 @@ def photo():
 
 # utilities
 def image_to_json(img):
-    return {'value':'data:image/png;base64,'+base64.encodestring(img)}
+    return {'value': 'data:image/png;base64,'+base64.encodestring(img)}
 
 if __name__ == '__main__':
     socketio.run(app, host='0.0.0.0')
