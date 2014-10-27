@@ -8,7 +8,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 from flask.ext.socketio import SocketIO, emit
 from flask.ext.bootstrap import Bootstrap
 
-from forms import TourForm, WaypointForm
+from forms import TourForm
 from turtle_handlers import TurtleTeleOp, ImageSubscriber, MapSubscriber, PathPlanner
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -45,13 +45,17 @@ def tour():
 @app.route('/manage_tours', methods=['GET', 'POST'])
 @app.route('/manage_tours/', methods=['GET', 'POST'])
 def manage_tours():
-    form = TourForm(request.form)
     tours = get_tour_list()
-    if request.form.get('select_tour') is not None:
-        tour_name = request.form['select_tour']
-        tour_data = load_tour(tour_name)
-        form = fill_tour_form(tour_data)
-        flash("Tour '{}' loaded.".format(tour_name))
+    form = TourForm()
+
+    tour_name = request.form.get('select_tour')
+    if tour_name is not None:
+        if tour_name != '':
+            tour_data = load_tour(tour_name)
+            form = TourForm(tour=tour_data)
+            flash("Tour '{}' loaded.".format(tour_name))
+    elif request.method == 'POST':
+        form = TourForm(request.form)
     if form.validate_on_submit():
         tour_name = form.data['name']
         save_tour(tour_name, form.data)
@@ -108,18 +112,6 @@ def save_tour(tour, data):
 def get_tour_list():
     tour_path = os.path.join(basedir, 'assets/tours/')
     return [name for name, ext in map(os.path.splitext, os.listdir(tour_path)) if ext == '.json']
-
-def fill_tour_form(tour):
-    form = TourForm()
-    form.name.data = tour['name']
-    form.waypoints.pop_entry()
-    for waypoint in tour['waypoints']:
-        wp_form = WaypointForm()
-        wp_form.title.data = waypoint['title']
-        wp_form.script.data = waypoint['script']
-        form.waypoints.append_entry(wp_form)
-
-    return form
 
 if __name__ == '__main__':
     socketio.run(app, host='0.0.0.0')

@@ -16,10 +16,11 @@
         <div class="panel-body">
           <form action="{{ url_for('manage_tours') }}" method='POST'>
             <select name="select_tour" class="form-control" onchange="this.form.submit()">
-              <option value="New">[New]</option>        
+              <option value=""></option>        
               {% for tour in tours %}
               <option value="{{ tour }}">{{ tour }}</option>        
               {% endfor %}
+              <option value="">[New]</option>        
             </select>
           </form>
         </div>
