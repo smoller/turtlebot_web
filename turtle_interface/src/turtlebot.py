@@ -35,7 +35,7 @@ def index():
 def demo():
     return render_template('demo.html')
 
-@app.route('/tour')
+@app.route('/tour/<name>')
 def tour():
     tour_name = 'tour'
     tour = load_tour(tour_name)
@@ -79,6 +79,12 @@ def photo():
     photo = image_sub.photo()
     if photo is not None:
         emit('new photo', image_to_json(photo))
+
+@socketio.on('move to waypoint', namespace='/waypoint')
+def map_move(waypoint):
+    #TODO Move robot here
+    #mover.moveToWaypoint(waypoint['position'], waypoint['id'])
+    emit('move complete', waypoint)
 
 # utilities
 def image_to_json(img):

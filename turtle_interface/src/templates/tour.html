@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-2" id="left_column">
+            <ul class="nav nav-pills nav-stacked" id="sidebar" role="tablist">
+            </ul>
+        </div>
+        <div class="col-md-10" id="content">
+            <div class="tab-content">
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script src="{{ url_for('static', filename='js/socket.io.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/annyang.min.js') }}"></script>
+<script>
+    var tour = {{ tour | safe }};
+</script>
+<script src="{{ url_for('static', filename='js/tour.js') }}"></script>
+{% endblock %}
