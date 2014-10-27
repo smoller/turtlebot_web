@@ -42,6 +42,6 @@
      </node>
   </group>
 
-  <node pkg="turtle_interface" name="turtle_interface" type="turtlebot.py" output="screen" />
+  <node pkg="turtle_interface" name="turtle_interface" type="run.py" output="screen" />
 
 </launch>

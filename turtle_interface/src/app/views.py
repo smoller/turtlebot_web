@@ -1,32 +1,12 @@
-#!/usr/bin/env python2
-
-import os
 import base64
 import json
 
-from flask import Flask, render_template, request, redirect, url_for, flash
-from flask.ext.socketio import SocketIO, emit
-from flask.ext.bootstrap import Bootstrap
+from flask import render_template, request, redirect, url_for, flash
 
 from forms import TourForm
-from turtle_handlers import TurtleTeleOp, ImageSubscriber, MapSubscriber, PathPlanner
+from . import app, socketio, teleop, map_sub, image_sub
+from config import basedir
 
-basedir = os.path.abspath(os.path.dirname(__file__))
-
-app = Flask(__name__)
-app.config.update(
-    DEBUG=True,
-    SECRET_KEY='somesecretkey',
-)
-
-socketio = SocketIO(app)
-bootstrap = Bootstrap(app)
-mover = TurtleTeleOp()
-image_sub = ImageSubscriber()
-map_sub = MapSubscriber()
-#path = PathPlanner()
-
-# views
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -70,7 +50,7 @@ def manage_tours():
 @socketio.on('move', namespace='/move')
 def move(data):
     print(data['x'], data['y'])
-    mover.move(data['x'], data['y'])
+    teleop.move(data['x'], data['y'])
 
 @socketio.on('map', namespace='/map') 
 def map_image(): 
@@ -87,12 +67,8 @@ def photo():
 @socketio.on('move to waypoint', namespace='/waypoint')
 def map_move(waypoint):
     #TODO Move robot here
-    #mover.moveToWaypoint(waypoint['position'], waypoint['id'])
+    #teleop.moveToWaypoint(waypoint['position'], waypoint['id'])
     emit('move complete', waypoint)
-
-@socketio.on('stop move', namespace='/stop')
-def move_stop():
-    pass
 
 # utilities
 def image_to_json(img):
@@ -116,6 +92,3 @@ def save_tour(tour, data):
 def get_tour_list():
     tour_path = os.path.join(basedir, 'assets/tours/')
     return [name for name, ext in map(os.path.splitext, os.listdir(tour_path)) if ext == '.json']
-
-if __name__ == '__main__':
-    socketio.run(app, host='0.0.0.0')
