@@ -30,13 +30,10 @@ def manage_tours():
     form = TourForm()
 
     tour_name = request.form.get('select_tour')
-    if tour_name is not None:
-        if tour_name != '':
+    if tour_name is not None and tour_name != '':
             tour_data = load_tour(tour_name)
             form = TourForm(tour=tour_data)
             flash("Tour '{}' loaded.".format(tour_name))
-    elif request.method == 'POST':
-        form = TourForm(request.form)
     if form.validate_on_submit():
         tour_name = form.data['name']
         save_tour(tour_name, form.data)

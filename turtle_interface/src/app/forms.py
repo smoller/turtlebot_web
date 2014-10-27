@@ -18,8 +18,7 @@ class TourForm(Form):
         if tour is not None:
             self.name.data = tour['name']
             self.waypoints.pop_entry()
-            for waypoint in tour['waypoints']:
-                wp_form = WaypointForm()
-                wp_form.title.data = waypoint['title']
-                wp_form.script.data = waypoint['script']
-                self.waypoints.append_entry(wp_form)
+            for index, waypoint in enumerate(tour['waypoints']):
+                self.waypoints.append_entry()
+                self.waypoints.entries[index].title.data = waypoint['title']
+                self.waypoints.entries[index].script.data = waypoint['script']
