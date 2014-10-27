@@ -84,6 +84,9 @@ def load_tour(tour):
 def save_tour(tour, data):
     print 'Tour saved: {}'.format(tour)
     tour_path = get_tour_path(tour)
+    # add id to waypoints
+    for i, wp in enumerate(data['waypoints']):
+        wp.update({'id':i})
     with open(tour_path, 'wt') as f:
         json.dump(data, f, sort_keys=True, indent=4, separators=(',', ': '))
 
