@@ -7,12 +7,24 @@
   <div class="row">
     <div class="col-md-2" id="left_column">
       <ul class="nav nav-stacked" id="sidebar">
-        <li><a href="#create_tour">Create Tour</a></li>
+        <li><a href="#">Manage Tours</a></li>
       </ul>
     </div>
     <div class="col-md-10">
+      <div class="panel panel-default">
+        <div class="panel-heading">Select Tour</div>
+        <div class="panel-body">
+          <form action="{{ url_for('manage_tours') }}" method='POST'>
+            <select name="select_tour" class="form-control" onchange="this.form.submit()">
+              <option value="New">[New]</option>        
+              {% for tour in tours %}
+              <option value="{{ tour }}">{{ tour }}</option>        
+              {% endfor %}
+            </select>
+          </form>
+        </div>
+      </div>
       <form method="post" action="">
-        {% import 'forms.html' as forms %}
         {{ form.hidden_tag() }}
         <div class="panel panel-default">
           <div class="panel-heading">Tour Name</div>
