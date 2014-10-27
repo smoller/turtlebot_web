@@ -12,10 +12,13 @@ tour.start = function() {
     var data = {"id":this.waypoints[this.currentWaypoint].id, "position":this.waypoints[this.currentWaypoint].location};
     tourSocket.emit('move to waypoint', data);
     tourSocket.on('move_complete', function (data) {
+        if (data.id !== this.waypoints[this.currentWaypoint].id) {
+            return;
+        }
         //Stop any script playing
         window.speechSynthesis.cancel();
         //Display waypoint content
-        $('#sidebar a[href="#'+this.waypoints[this.currentWaypoint].id+'"]').tab('show')
+        $('#sidebar a[href="#'+this.waypoints[this.currentWaypoint].id+'"]').tab('show');
         //start current script
         var script = new SpeechSynthesisUtterance(); 
         script.text = this.waypoints[index].script;
@@ -29,7 +32,7 @@ tour.start = function() {
 
 tour.stop = function() {
     window.speechSynthesis.cancel();
-    //TODO stop moving
+    tourSocket.emit('stop move');
 }
 
 tour.reset = function() {
@@ -54,6 +57,19 @@ $('#content div:eq(0)').addClass('active');
 $('#sidebar li a').click(function(e) {
     e.preventDefault();
     $(this).tab('show');
+});
+
+$('#play-button').click(function(e) {
+    tour.start();
+});
+
+$('#stop-button').click(function(e) {
+    tour.stop();
+});
+
+$('#restart-button').click(function(e) {
+    tour.reset();
+    tour.start();
 });
 
 function layoutContent(content) {

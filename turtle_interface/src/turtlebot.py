@@ -90,6 +90,10 @@ def map_move(waypoint):
     #mover.moveToWaypoint(waypoint['position'], waypoint['id'])
     emit('move complete', waypoint)
 
+@socketio.on('stop move', namespace='/stop')
+def move_stop():
+    pass
+
 # utilities
 def image_to_json(img):
     return {'value': 'data:image/png;base64,'+base64.encodestring(img)}
