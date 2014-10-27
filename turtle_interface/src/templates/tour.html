@@ -22,5 +22,5 @@
 <script>
     var tour = {{ tour | safe }};
 </script>
-
+<script src="{{ url_for('static', filename='js/tour.js') }}"></script>
 {% endblock %}

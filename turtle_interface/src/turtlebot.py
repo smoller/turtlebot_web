@@ -71,6 +71,12 @@ def photo():
     if photo is not None:
         emit('new photo', image_to_json(photo))
 
+@socketio.on('move to waypoint', namespace='/waypoint')
+def map_move(waypoint):
+    #TODO Move robot here
+    #mover.moveToWaypoint(waypoint['position'], waypoint['id'])
+    emit('move complete', waypoint)
+
 # utilities
 def image_to_json(img):
     return {'value': 'data:image/png;base64,'+base64.encodestring(img)}
