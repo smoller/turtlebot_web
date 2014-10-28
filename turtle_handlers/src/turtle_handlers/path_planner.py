@@ -4,7 +4,6 @@ import rospy
 from sensor_msgs.msg import LaserScan
 from nav_msgs.msg import OccupancyGrid
 from geometry_msgs.msg import PoseStamped
-from turtle_handlers.teleop import TurtleTeleOp
 from tf.transformations import euler_from_quaternion
 from heapq import heappush, heappop # for priority queue
 import math
@@ -36,14 +35,13 @@ class node:
         return(d)
 
 
-class PathPlanner():
+class PathPlanner:
 
 	def __init__(self, scan='scan', maps='/map', pos='slam_out_pose'):
 		self.grid = None
 		self._grid_height = self._grid_width = 0
 		
 		self.route = None
-		self.mover = TurtleTeleOp()
 		
 		self.pos = None
 		self.update = 0
@@ -58,47 +56,14 @@ class PathPlanner():
 	
 	def _callbackPos(self, data):
 		self.pos = data
-		#print self._getYaw()
 
 	def _callbackMap(self, data):
 		if self.update == 0:
 			self._grid_width, self._grid_height = data.info.width, data.info.height
 			self.grid = data
 		self.update = (self.update+1)%10; 
-		print("map")
-		if self.route == None:
-			route = self._createPath()
-			print 'Route:'
-			self.route = route
-			for dest in route:
-				print dest
-				self.dest = dest;
-				pos = self.pos.pose.position
-				angle = 0
-				#TODO Fix problem here
-				#I dont know how to calculate the angle to rotate
-				#I tried to use sin, cos, tan, everything but it didn't work at all
-				
-				try:
-					print math.pow((pos.y/0.05)+1024-dest[1],2)+pow((pos.x/0.05)+1024-dest[0],2)
-					angle = math.acos((int(pos.y/0.05)+1024-dest[1])/math.pow((pos.y/0.05)+1024-dest[1],2)+pow((pos.x/0.05)+1024-dest[0],2))
-				except Exception:
-					angle=0
-				yaw = self._getYaw()
-				print angle
-				#print math.sqrt(math.pow((pos.y/0.05)+1024-dest[1],2)+pow((pos.x/0.05)+1024-dest[0],2))
-				while(abs(self._getYaw()-angle)>0.2):
-					self.mover.move((angle-self._getYaw()),0)
-				
-				#try:
-				#	print math.atan(float(int(pos.y/0.05)+1024-dest[1])/float(int(pos.x/0.05)+1024-dest[0]))
-				#except Exception:
-				#	angle = 0
-				#while(math.sqrt(math.pow((self.pos.pose.position.y/0.05)+1024-dest[1],2)+pow((self.pos.pose.position.x/0.05)+1024-dest[0],2))>0.5):
-				#	self.mover.move(0,0.5)
-				#print math.sqrt(math.pow((self.pos.pose.position.y/0.05)+1024-dest[1],2)+pow((self.pos.pose.position.x/0.05)+1024-dest[0],2))
 
-	def _createPath(self, point = [1024,1034]):
+	def createPath(self, point = [1024,1024]):
 		the_map=np.reshape(np.array(self.grid.data, dtype=np.uint8), 
                                (self._grid_height, self._grid_width))
 		n=self._grid_width 
@@ -108,8 +73,8 @@ class PathPlanner():
 		dirs=4
 		dx = [1, 0, -1, 0]
    		dy = [0, 1, 0, -1]
- 		xA=int(self.pos.pose.position.x+1024)
- 		yA=int(self.pos.pose.position.y+1024)
+ 		xA=int(self.pos.pose.position.x/0.05+1024)
+ 		yA=int(self.pos.pose.position.y/0.05+1024)
  		xB=point[0]
  		yB=point[1]
 		closed_nodes_map = [] # map of closed (tried-out) nodes
@@ -197,4 +162,4 @@ class PathPlanner():
 
 	def _getYaw(self):
 		(roll, pitch, yaw) = euler_from_quaternion([self.pos.pose.orientation.x,self.pos.pose.orientation.y, self.pos.pose.orientation.z, self.pos.pose.orientation.w])
-		return yaw+3.14
+		return yaw
