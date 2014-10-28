@@ -1,4 +1,3 @@
-import os
 import base64
 import json
 
@@ -7,6 +6,7 @@ from flask import render_template, request, redirect, url_for, flash
 from forms import TourForm
 from . import app, socketio, teleop, map_sub, image_sub
 from config import basedir
+from models import Tour, get_tour_list 
 
 @app.route('/')
 def index():
@@ -31,12 +31,12 @@ def manage_tours():
 
     tour_name = request.form.get('select_tour')
     if tour_name is not None and tour_name != '':
-            tour_data = load_tour(tour_name)
+            tour_data = Tour(tour_name).load_tour()
             form = TourForm(tour=tour_data)
             flash("Tour '{}' loaded.".format(tour_name))
     if form.validate_on_submit():
         tour_name = form.data['name']
-        save_tour(tour_name, form.data)
+        Tour(tour_name).save_tour(form.data)
         flash("Tour '{}' saved.".format(tour_name))
         return redirect(url_for('manage_tours'))
 
@@ -71,25 +71,3 @@ def map_move(waypoint):
 # utilities
 def image_to_json(img):
     return {'value': 'data:image/png;base64,'+base64.encodestring(img)}
-
-def get_tour_path(tour):
-    return os.path.join(basedir, 'assets/tours/{}.json'.format(tour))
-
-def load_tour(tour):
-    tour_path = get_tour_path(tour)
-    with open(tour_path, 'r') as f:
-        return json.load(f)
-    return None
-
-def save_tour(tour, data):
-    print 'Tour saved: {}'.format(tour)
-    tour_path = get_tour_path(tour)
-    # add id to waypoints
-    for i, wp in enumerate(data['waypoints']):
-        wp.update({'id':i})
-    with open(tour_path, 'wt') as f:
-        json.dump(data, f, sort_keys=True, indent=4, separators=(',', ': '))
-
-def get_tour_list():
-    tour_path = os.path.join(basedir, 'assets/tours/')
-    return [name for name, ext in map(os.path.splitext, os.listdir(tour_path)) if ext == '.json']

@@ -17,7 +17,6 @@ class Tour:
 
     def save_tour(self, data):
         print 'Tour saved: {}'.format(self.name)
-        # add id to waypoints
         for i, wp in enumerate(data['waypoints']):
             wp.update({'id':i})
         with open(self._file, 'wt') as f:
