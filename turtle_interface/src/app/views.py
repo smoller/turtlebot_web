@@ -24,9 +24,9 @@ def tour():
     return render_template('tour.html', tour=tour)
 
 @app.route('/manage_tours', methods=['GET', 'POST'])
-@app.route('/manage_tours/', methods=['GET', 'POST'])
 def manage_tours():
     tours = get_tour_list()
+    selected_tour = None
     form = TourForm()
 
     tour_name = request.form.get('select_tour')
@@ -34,6 +34,7 @@ def manage_tours():
             tour_data = Tour(tour_name).load_tour()
             form = TourForm(tour=tour_data)
             flash("Tour '{}' loaded.".format(tour_name))
+            selected_tour = tour_name
     if form.validate_on_submit():
         tour_name = form.data['name']
         Tour(tour_name).save_tour(form.data)
@@ -42,7 +43,8 @@ def manage_tours():
 
     return render_template('manage_tours.html', 
             form=form,
-            tours=tours)
+            tours=tours,
+            selected_tour=selected_tour)
 
 # Socket events
 @socketio.on('move', namespace='/move')

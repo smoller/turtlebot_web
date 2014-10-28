@@ -18,9 +18,9 @@
             <select name="select_tour" class="form-control" onchange="this.form.submit()">
               <option value=""></option>        
               {% for tour in tours %}
-              <option value="{{ tour }}">{{ tour }}</option>        
+              <option value="{{ tour }}" {% if tour == selected_tour%}selected{% endif %}>{{ tour }}</option>        
               {% endfor %}
-              <option value="">[New]</option>        
+              <option value="">[Add New]</option>        
             </select>
           </form>
         </div>
