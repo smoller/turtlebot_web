@@ -1,41 +1,58 @@
 import rospy
-from geometry_msgs.msg import Twist
+from geometry_msgs.msg import Twist,PoseStamped
+from tf.transformations import euler_from_quaternion
+import tf
+import math
 
-from obstacle_detector import ObstacleDetector
 from path_planner import PathPlanner
+from obstacle_detector import ObstacleDetector
 
 class TurtleTeleOp(object):
 
-    def __init__(self, topic='cmd_vel_mux/input/navi', obstacle_detect=False):
-        rospy.init_node('turtlebot_move', anonymous=True)
-        self.pub = rospy.Publisher(topic, Twist, queue_size=1)
-        self.twist = Twist()
-        self.path = PathPlanner()
+	def __init__(self, topic='cmd_vel_mux/input/navi', scan='scan', pos='slam_out_pose', obstacle_detect=False):
+		rospy.init_node('turtlebot_move', anonymous=True)
+		
+		self.pub = rospy.Publisher(topic, Twist, queue_size=1)
+		self.subPos = rospy.Subscriber(pos, PoseStamped, self._callbackPos)
+		
+		self.obstacleDetector = ObstacleDetector()
+		
+		self.twist = Twist()
+		self.dest = [1024,1024]
+		self.path = PathPlanner()
+		self.pos = None
 
-        self._max_speed = 0.5 # m/s
-        self._max_omega = 0.5 # rad/s
-        self._range = (-1, 1)
+		self._max_speed = 0.5 # m/s
+		self._max_omega = 0.5 # rad/s
+		self._range = (-1, 1)
 
-    def set_move(self, speed, omega):
-        self.twist.linear.x, self.twist.angular.z = speed, omega
+	def set_move(self, speed, omega):
+		self.twist.linear.x, self.twist.angular.z = speed, omega
 
-    def move(self, x, y):
-        # receive range in [-1, 1]
-        speed = self._clamp(y, *self._range) * self._max_speed
-        omega = self._clamp(x, *self._range) * self._max_omega
+	def _callbackPos(self, data):
+		self.pos = data
+		print math.sqrt(math.pow((self.pos.pose.position.y/0.05)+1024-self.dest[1],2)+pow((self.pos.pose.position.x/0.05)+1024-self.dest[0],2))
+		
+	def move(self, x, y):
+		# receive range in [-1, 1]
+		speed = self._clamp(y, *self._range) * self._max_speed
+		omega = self._clamp(x, *self._range) * self._max_omega
 
-        self.set_move(speed, omega)
-        self.publish()
+		self.set_move(speed, omega)
+		self.publish()
 
-	def moveToWaypoint(position, waid):
-		route = path.createPath()
+	def _callbackScan(self, data):
+		print("scan")
+		
+	def moveToWaypoint(self, position, waid):
+		route = self.path.createPath(self.pos, position)
 		i=0
 		for dest in route:
-			print [int(self.pos.pose.position.x/0.05+1024),int(self.pos.pose.position.y/0.05+1024)]
-			print dest
 			self.dest = dest;
 			i = i+1
 			if i<5: continue
+			print [int(self.pos.pose.position.x/0.05+1024),int(self.pos.pose.position.y/0.05+1024)]
+			print dest
 			i=0
 			pos = self.pos.pose.position
 			yaw = self._getYaw()
@@ -51,22 +68,31 @@ class TurtleTeleOp(object):
 			print yaw * 180 / 3.14
 
 			if angle>yaw or abs(angle-self._getYaw())>3.14 :
-				while(abs(angle-self._getYaw())>0.04):
-					move(2*abs(angle-self._getYaw()), 0)
+				while(abs(angle-self._getYaw())>0.05):
+					self.move(2*abs(angle-self._getYaw()), 0)
 			else:
-				while(abs(angle-self._getYaw())>0.04):
-					move(-2*abs(angle-self._getYaw()), 0)	
-			
+				while(abs(angle-self._getYaw())>0.05):
+					self.move(-2*abs(angle-self._getYaw()), 0)	
+		
 			print "after"
-			print yaw
-			while(math.sqrt(math.pow((self.pos.pose.position.y/0.05)+1024-dest[1],2)+pow((self.pos.pose.position.x/0.05)+1024-dest[0],2))>2):
-				self.mover.move(0, 0.3)	
-				
-    def stop(self):
-        self.publish(Twist())
+			print self._getYaw() * 180 / 3.14
+			while(math.sqrt(math.pow((self.pos.pose.position.y/0.05)+1024-dest[1],2)+pow((self.pos.pose.position.x/0.05)+1024-dest[0],2))>3):
+				self.move(0, 0.3)	
+			
+			if self.obstacleDetector.is_obstacle() == True :
+				return False;
+		
+		return True;
+			
+	def stop(self):
+		self.publish(Twist())
 
-    def publish(self):
-        self.pub.publish(self.twist)
+	def publish(self):
+		self.pub.publish(self.twist)
 
-    def _clamp(self, n, minn, maxn):
-        return max(min(maxn, n), minn)
+	def _clamp(self, n, minn, maxn):
+		return max(min(maxn, n), minn)
+		
+	def _getYaw(self):
+		(roll, pitch, yaw) = euler_from_quaternion([self.pos.pose.orientation.x,self.pos.pose.orientation.y, self.pos.pose.orientation.z, self.pos.pose.orientation.w])
+		return yaw

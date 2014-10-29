@@ -3,11 +3,8 @@ from math import sin, cos
 import rospy
 from sensor_msgs.msg import LaserScan
 from nav_msgs.msg import OccupancyGrid
-from geometry_msgs.msg import PoseStamped
-from tf.transformations import euler_from_quaternion
 from heapq import heappush, heappop # for priority queue
 import math
-import tf
 
 import numpy as np
 
@@ -37,25 +34,16 @@ class node:
 
 class PathPlanner:
 
-	def __init__(self, scan='scan', maps='/map', pos='slam_out_pose'):
+	def __init__(self, maps='/map'):
 		self.grid = None
 		self._grid_height = self._grid_width = 0
 		
 		self.route = None
 		
-		self.pos = None
 		self.update = 0
 		self.path = None
 		self.dest = None;
-		#self.subScan = rospy.Subscriber(scan, LaserScan, self._callbackScan)
 		self.subMap = rospy.Subscriber(maps, OccupancyGrid, self._callbackMap)
-		self.subPos = rospy.Subscriber(pos, PoseStamped, self._callbackPos)
-
-	def _callbackScan(self, data):
-		print("scan")
-	
-	def _callbackPos(self, data):
-		self.pos = data
 
 	def _callbackMap(self, data):
 		if self.update == 0:
@@ -63,7 +51,7 @@ class PathPlanner:
 			self.grid = data
 		self.update = (self.update+1)%10; 
 
-	def createPath(self, point = [1024,1024]):
+	def createPath(self, pos, point = [1024,1024]):
 		the_map=np.reshape(np.array(self.grid.data, dtype=np.uint8), 
                                (self._grid_height, self._grid_width))
 		n=self._grid_width 
@@ -73,8 +61,8 @@ class PathPlanner:
 		dirs=4
 		dx = [1, 0, -1, 0]
    		dy = [0, 1, 0, -1]
- 		xA=int(self.pos.pose.position.x/0.05+1024)
- 		yA=int(self.pos.pose.position.y/0.05+1024)
+ 		xA=int(pos.pose.position.x/0.05+1024)
+ 		yA=int(pos.pose.position.y/0.05+1024)
  		xB=point[0]
  		yB=point[1]
 		closed_nodes_map = [] # map of closed (tried-out) nodes
@@ -159,7 +147,3 @@ class PathPlanner:
 		                heappush(pq[pqi], m0) # add the better node instead
 		return '' # if no route found
 
-
-	def _getYaw(self):
-		(roll, pitch, yaw) = euler_from_quaternion([self.pos.pose.orientation.x,self.pos.pose.orientation.y, self.pos.pose.orientation.z, self.pos.pose.orientation.w])
-		return yaw
