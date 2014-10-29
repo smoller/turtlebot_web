@@ -9,21 +9,20 @@ import math
 import numpy as np
 
 class node:
-    xPos = 0 # x position
-    yPos = 0 # y position
-    distance = 0 # total distance already travelled to reach the node
-    priority = 0 # priority = distance + remaining distance estimate
+    xPos = 0 
+    yPos = 0 
+    distance = 0
+    priority = 0 
     def __init__(self, xPos, yPos, distance, priority):
         self.xPos = xPos
         self.yPos = yPos
         self.distance = distance
         self.priority = priority
-    def __lt__(self, other): # comparison method for priority queue
+    def __lt__(self, other):
         return self.priority < other.priority
     def updatePriority(self, xDest, yDest):
-        self.priority = self.distance + self.estimate(xDest, yDest) * 10 # A*
-    # give higher priority to going straight instead of diagonally
-    def nextMove(self): # d: direction to move
+        self.priority = self.distance + self.estimate(xDest, yDest) * 10 
+    def nextMove(self): 
         self.distance += 10
     def estimate(self, xDest, yDest):
         xd = xDest - self.xPos
@@ -61,8 +60,8 @@ class PathPlanner:
 		dirs=4
 		dx = [1, 0, -1, 0]
    		dy = [0, 1, 0, -1]
- 		xA=int(pos.pose.position.x/0.05+1024)
- 		yA=int(pos.pose.position.y/0.05+1024)
+ 		xA=int(pos.pose.position.x/0.025+1024)
+ 		yA=int(pos.pose.position.y/0.025+1024)
  		xB=point[0]
  		yB=point[1]
 		closed_nodes_map = [] # map of closed (tried-out) nodes
@@ -146,4 +145,3 @@ class PathPlanner:
 		                pqi = 1 - pqi
 		                heappush(pq[pqi], m0) # add the better node instead
 		return '' # if no route found
-
