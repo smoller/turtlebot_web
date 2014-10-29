@@ -48,7 +48,7 @@ tour.reset = function() {
 }
 
 _.each(tour.waypoints, function(waypoint) {
-    $('#sidebar').append('<li><a href="#'+waypoint.id+'" role="tab" data-toggle="pill">'+waypoint.name+'</a></li>');
+    $('#sidebar').append('<li><a href="#'+waypoint.id+'" role="tab" data-toggle="pill">'+waypoint.title+'</a></li>');
     $('#content').append(function() {
         var html = '<div class="tab-pane" id="'+waypoint.id+'">';
         html += layoutContent(waypoint.content);
