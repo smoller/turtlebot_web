@@ -1,33 +1,39 @@
 
-var tourSocket = io.connect('http://' + document.domain + ':' + location.port + '/'); 
+var tourSocket = io.connect('http://' + document.domain + ':' + location.port + '/waypoint'); 
 
 tour.currentWaypoint = 0;
-tour.start = function() {
+tour.play = function() {
+    
+    console.log("hits");
 
     if (this.currentWaypoint >= this.waypoints.length) {
         return;
     }
 
+
+
     //Check if at correct point and move if not
     var data = {"id":this.waypoints[this.currentWaypoint].id, "position":this.waypoints[this.currentWaypoint].location};
-    tourSocket.emit('move to waypoint', data);
+    tourSocket.emit('move_to_waypoint', data);
+    var tour = this;
     tourSocket.on('move_complete', function (data) {
-        if (data.id !== this.waypoints[this.currentWaypoint].id) {
+        console.log(tour.currentWaypoint);
+        if (data.id !== tour.waypoints[tour.currentWaypoint].id) {
             return;
         }
         //Stop any script playing
         window.speechSynthesis.cancel();
         //Display waypoint content
-        $('#sidebar a[href="#'+this.waypoints[this.currentWaypoint].id+'"]').tab('show');
+        $('#sidebar a[href="#'+tour.waypoints[tour.currentWaypoint].id+'"]').tab('show');
         //start current script
         var script = new SpeechSynthesisUtterance(); 
-        script.text = this.waypoints[index].script;
+        script.text = tour.waypoints[tour.currentWaypoint].script;
         script.onend = function(e) {
-            this.currentWaypoint++;
-            this.executeFromWaypoint();
+            tour.currentWaypoint++;
+            tour.play();
         }
-        window.speechSynthesis.speak(msg); 
-    } 
+        window.speechSynthesis.speak(script); 
+    });
 };
 
 tour.stop = function() {
@@ -38,14 +44,16 @@ tour.stop = function() {
 tour.reset = function() {
     this.stop();
     this.currentWaypoint = 0;
+    console.log(tour.currentWaypoint);
 }
 
 _.each(tour.waypoints, function(waypoint) {
     $('#sidebar').append('<li><a href="#'+waypoint.id+'" role="tab" data-toggle="pill">'+waypoint.name+'</a></li>');
     $('#content').append(function() {
-        var html += '<div class="tab-pane" id="'+waypoint.id+'">';
+        var html = '<div class="tab-pane" id="'+waypoint.id+'">';
         html += layoutContent(waypoint.content);
-        var html = '</div>';
+        html += '</div>';
+        return html;
     });
 });
 
@@ -60,7 +68,7 @@ $('#sidebar li a').click(function(e) {
 });
 
 $('#play-button').click(function(e) {
-    tour.start();
+    tour.play();
 });
 
 $('#stop-button').click(function(e) {
@@ -69,10 +77,24 @@ $('#stop-button').click(function(e) {
 
 $('#restart-button').click(function(e) {
     tour.reset();
-    tour.start();
+    tour.play();
 });
 
 function layoutContent(content) {
-    var html = '<p>'+content[0]+'</p>';
+
+    console.log(content);
+    
+    var html ='<div class="row">';
+    _.each(content.images, function(image) {
+        html += '<div class="col-md-4">';
+        html += '<a href="#" class="thumbnail">';
+        html += '<img style="width:100%; height:200px;" src="'+image+'">';
+        html += '</a>';
+        html += '</div>';
+    });
+    html += '</div>';
+
+
+    html += '<p>'+content.text +'</p>';
     return html;
 }

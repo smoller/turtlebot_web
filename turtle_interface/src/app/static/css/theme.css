@@ -1,0 +1,15 @@
+.btn-group {
+    width:100%;
+}
+
+.btn-group button {
+    width:33.33%;
+}
+
+.tour-bar {
+    margin-top:50px;
+}
+
+#play-button {
+    width:100%;
+}

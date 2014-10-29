@@ -2,7 +2,7 @@ import base64
 import json
 
 from flask import render_template, request, redirect, url_for, flash
-
+from flask.ext.socketio import emit
 from forms import TourForm
 from . import app, socketio, teleop, map_sub, image_sub
 from config import basedir
@@ -17,11 +17,10 @@ def demo():
     return render_template('demo.html')
 
 @app.route('/tour/<name>')
-def tour():
-    tour_name = 'tour'
-    tour = load_tour(tour_name)
-
-    return render_template('tour.html', tour=tour)
+def tour(name):
+    
+    tour = Tour(name)
+    return render_template('tour.html', tour=json.dumps(tour.load_tour()))
 
 @app.route('/manage_tours', methods=['GET', 'POST'])
 def manage_tours():
@@ -64,12 +63,14 @@ def photo():
     if photo is not None:
         emit('new photo', image_to_json(photo))
 
-@socketio.on('move to waypoint', namespace='/waypoint')
+@socketio.on('move_to_waypoint', namespace='/waypoint')
 def map_move(waypoint):
     #TODO Move robot here
     #teleop.moveToWaypoint(waypoint['position'], waypoint['id'])
-    emit('move complete', waypoint)
+    emit('move_complete', waypoint)
 
 # utilities
 def image_to_json(img):
     return {'value': 'data:image/png;base64,'+base64.encodestring(img)}
+
+

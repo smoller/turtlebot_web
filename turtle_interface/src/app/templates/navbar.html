@@ -15,6 +15,9 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
+                <li {% if request.endpoint == url_for('tour', name='demo')%} class='active' {% endif %}>
+                    <a href="{{url_for('tour', name='demo')}}">Example Tour</a>
+                </li>
                 {{navitem('manage_tours', 'Manage Tours', '')}}
                 {{navitem('demo', 'Demo', '')}}
             </ul>

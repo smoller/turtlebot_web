@@ -3,7 +3,7 @@ import json
 
 from config import basedir
 
-tour_path = os.path.join(basedir, 'assets/tours/')
+tour_path = os.path.join(basedir, 'assets/')
 
 class Tour:
     def __init__(self, name):
