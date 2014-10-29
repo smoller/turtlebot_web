@@ -31,7 +31,7 @@ class TurtleTeleOp(object):
 
 	def _callbackPos(self, data):
 		self.pos = data
-		print math.sqrt(math.pow((self.pos.pose.position.y/0.05)+1024-self.dest[1],2)+pow((self.pos.pose.position.x/0.05)+1024-self.dest[0],2))
+		print math.sqrt(math.pow((self.pos.pose.position.y/0.025)+1024-self.dest[1],2)+pow((self.pos.pose.position.x/0.025)+1024-self.dest[0],2))
 		
 	def move(self, x, y):
 		# receive range in [-1, 1]
@@ -45,45 +45,43 @@ class TurtleTeleOp(object):
 		print("scan")
 		
 	def moveToWaypoint(self, position, waid):
+		print("destination",position)
+		print("Current", [int(self.pos.pose.position.x/0.025+1024),int(self.pos.pose.position.y/0.025+1024)])
 		route = self.path.createPath(self.pos, position)
+		print "path created"
+		print route
 		i=0
 		for dest in route:
 			self.dest = dest;
 			i = i+1
-			if i<5: continue
-			print [int(self.pos.pose.position.x/0.05+1024),int(self.pos.pose.position.y/0.05+1024)]
-			print dest
+			if i<10: continue
+			print("destination",dest)
+			print("Current", [int(self.pos.pose.position.x/0.025+1024),int(self.pos.pose.position.y/0.025+1024)])
 			i=0
 			pos = self.pos.pose.position
 			yaw = self._getYaw()
-			curPos = [((pos.x/0.05)+1024),((pos.y/0.05)+1024)]
+			curPos = [((pos.x/0.025)+1024),((pos.y/0.025)+1024)]
 			hip=0
 			ac = dest[0]-curPos[0]
 			oc = dest[1]-curPos[1]
 			yaw = round(yaw,2)
 			angle = round(math.atan2(oc, ac),2)
-			print "angle"
-			print angle * 180 / 3.14
-			print "yaw"
-			print yaw * 180 / 3.14
 
-			if angle>yaw or abs(angle-self._getYaw())>3.14 :
-				while(abs(angle-self._getYaw())>0.05):
+			if angle>yaw or 5>abs(angle-self._getYaw())>3.14 :
+				while(abs(angle-self._getYaw())>0.06):
 					self.move(2*abs(angle-self._getYaw()), 0)
 			else:
-				while(abs(angle-self._getYaw())>0.05):
+				while(abs(angle-self._getYaw())>0.06):
 					self.move(-2*abs(angle-self._getYaw()), 0)	
 		
-			print "after"
-			print self._getYaw() * 180 / 3.14
-			while(math.sqrt(math.pow((self.pos.pose.position.y/0.05)+1024-dest[1],2)+pow((self.pos.pose.position.x/0.05)+1024-dest[0],2))>3):
+			while(20>math.sqrt(math.pow((self.pos.pose.position.y/0.025)+1024-dest[1],2)+pow((self.pos.pose.position.x/0.025)+1024-dest[0],2))>3):
 				self.move(0, 0.3)	
 			
-			if self.obstacleDetector.is_obstacle() == True :
-				return False;
+			#if self.obstacleDetector.is_obstacle() == True :
+			#	return False;
 		
+		print "done"
 		return True;
-			
 	def stop(self):
 		self.publish(Twist())
 

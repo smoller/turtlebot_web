@@ -4,7 +4,7 @@
     {
      "id":1,
      "title":"Waypoint 1",
-     "location":[0,0],
+     "location":[1024,1024],
      "script":"The iCinema Centre for Interactive Cinema Research, established in 2002, is an interdisciplinary arts, engineering and science centre spanning the Faculties of the College of Fine Arts, Arts and Social Sciences, Engineering, Law and Science at UNSW.",
      "content": {
          "images": ["http://www.icinema.unsw.edu.au/assets/43/glass_phm_medium.jpg",
@@ -17,12 +17,25 @@
     {
      "id":2,
      "title":"Waypoint 2",
-     "location":[1,0],
+     "location":[1104,1024],
      "script":"The iCinema research program focuses on research into interactive media for benchmark applications across the arts, broadcast, construction, environment, heritage, museum and visualisation sectors.",
      "content": {
          "images":["http://icinema.unsw.edu.au/assets/256/MinesIDome_medium.jpg", "http://icinema.unsw.edu.au/assets/208/bruyere_LDDF_normal.jpg",
          "http://icinema.unsw.edu.au/assets/28/convo_new_1_medium.jpg"],
          "text":"The iCinema research program focuses on research into interactive media for benchmark applications across the arts, broadcast, construction, environment, heritage, museum and visualisation sectors."
+     }
+    }, 
+    {
+     "id":3,
+     "title":"End",
+     "location":[1024,1024],
+     "script":"Thanks for your visit",
+     "content": {
+         "images": ["http://www.icinema.unsw.edu.au/assets/43/glass_phm_medium.jpg",
+                    "http://www.icinema.unsw.edu.au/assets/121/cupola_new2_medium.jpg",
+                    "http://www.icinema.unsw.edu.au/assets/115/bourke5_medium.jpg"
+                    ],
+         "text" : "Thanks for your visit"
      }
     }
   ]
