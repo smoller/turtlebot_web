@@ -98,3 +98,12 @@ function layoutContent(content) {
     html += '<p>'+content.text +'</p>';
     return html;
 }
+
+
+annyang.debug();
+annyang.addCommands({
+    'play':function() {
+        tour.play();
+    }
+});
+annyang.start();
