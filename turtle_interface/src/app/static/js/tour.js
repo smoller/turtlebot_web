@@ -1,4 +1,3 @@
-
 var tourSocket = io.connect('http://' + document.domain + ':' + location.port + '/waypoint'); 
 
 tour.currentWaypoint = 0;

@@ -10,5 +10,3 @@ X UI for tour creation
 X way to store order of waypoints in tour
 - Test moveToWaypoint()
 - Create a test map and tour for presentation
-
-Any of you guys are coming to the lab this afternoon?
