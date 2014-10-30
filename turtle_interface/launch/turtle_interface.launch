@@ -6,7 +6,7 @@
 
   <group if="$(arg sim)">
     <remap from="/turtle1/cmd_vel" to="/cmd_vel_mux/input/navi" />
-    <!-- <node pkg="turtlesim" name="turtlesim" type="turtlesim_node" output="screen" /> -->
+    <node pkg="turtlesim" name="turtlesim" type="turtlesim_node" output="screen" />
     <node pkg="turtle_handlers" name="turtle_handlers" type="sim_topics.py" />
   </group>
 

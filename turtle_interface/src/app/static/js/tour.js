@@ -9,17 +9,12 @@ tour.play = function() {
         return;
     }
 
-
-
     //Check if at correct point and move if not
     var data = {"id":this.waypoints[this.currentWaypoint].id, "position":this.waypoints[this.currentWaypoint].location};
     tourSocket.emit('move_to_waypoint', data);
     var tour = this;
     tourSocket.on('move_complete', function (data) {
         console.log(tour.currentWaypoint);
-        if (data.id !== tour.waypoints[tour.currentWaypoint].id) {
-            return;
-        }
         //Stop any script playing
         window.speechSynthesis.cancel();
         //Display waypoint content
@@ -28,10 +23,16 @@ tour.play = function() {
         var script = new SpeechSynthesisUtterance(); 
         script.text = tour.waypoints[tour.currentWaypoint].script;
         script.onend = function(e) {
+            console.log('moving to next waypoint');
             tour.currentWaypoint++;
             tour.play();
         }
-        window.speechSynthesis.speak(script); 
+        if ('speechSynthesis' in window) {
+            console.log('speech supported');
+            window.speechSynthesis.speak(script); 
+        } else {
+            console.log('speech not supported!');
+        }
     });
 };
 
