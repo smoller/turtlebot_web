@@ -17,9 +17,6 @@ tour.play = function() {
     var tour = this;
     tourSocket.on('move_complete', function (data) {
         console.log(tour.currentWaypoint);
-        if (data.id !== tour.waypoints[tour.currentWaypoint].id) {
-            return;
-        }
         //Stop any script playing
         window.speechSynthesis.cancel();
         //Display waypoint content
