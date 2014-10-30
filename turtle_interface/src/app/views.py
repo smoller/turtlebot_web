@@ -66,7 +66,7 @@ def photo():
 @socketio.on('move_to_waypoint', namespace='/waypoint')
 def map_move(waypoint):
     #TODO Move robot here
-    #teleop.moveToWaypoint(waypoint['position'], waypoint['id'])
+    teleop.moveToWaypoint(waypoint['position'], waypoint['id'])
     emit('move_complete', waypoint)
 
 # utilities
